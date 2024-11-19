@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <div className="flex justify-center items-center w-full h-screen bg-slate-200">
-        <div className="flex max-w-4xl w-full h-[80vh] bg-slate-500 rounded-lg shadow-lg">
+        <div className="flex max-w-4xl w-full h-[80vh] bg-slate-500 shadow-lg">
           <SideBar />
           <AllChat />
         </div>

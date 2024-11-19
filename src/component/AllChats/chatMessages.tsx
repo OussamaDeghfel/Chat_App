@@ -13,9 +13,6 @@ const ChatMessages = () => {
         {id: 4, image: user, username: "Ali", messageDescription: "What about you", time: "2:00"},
         {id: 5, image: user, username: "Omar", messageDescription: "I'm good", time: "3:00"},
         {id: 6, image: user, username: "Ammar", messageDescription: "I'm happy", time: "4:00"},
-        {id: 7, image: user, username: "Ahmed", messageDescription: "I'm sad", time: "5:00"},
-        {id: 8, image: user, username: "Mohammed", messageDescription: "I'm angry", time: "6:00"},
-        {id: 9, image: user, username: "Ali", messageDescription: "I'm tired", time: "7:00"},
     ]
   return (
     <div className="w-60 h-full bg-slate-800 p-2 border-r-2 border-slate-400 pt-8 flex flex-col">
@@ -25,11 +22,11 @@ const ChatMessages = () => {
           prefix={<CiSearch size={15} color="slate" />}
         />
       </Form.Item>
-      <div className="w-full h-full flex flex-col justify-start items-center overflow-y-scroll space-y-2">
+      <div className="w-full h-full flex flex-col justify-start items-center space-y-2">
 
         {messages.map((message) => {
           return (
-            <div className="w-full h-16 flex rounded-lg p-2 bg-slate-500 justify-center items-center space-x-1" key={message.id}>
+            <div className={`w-full h-16 flex rounded-lg p-2 bg-slate-600 justify-center items-center space-x-1 cursor-pointer ${message.id == 1 ? "bg-blue-600 border-2 border-slate-950" : ""}`} key={message.id}>
           <div className="w-10 h-10 flex justify-center items-center">
             <img
               src={message.image}

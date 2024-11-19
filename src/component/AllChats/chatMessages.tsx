@@ -18,7 +18,7 @@ const ChatMessages = () => {
         {id: 9, image: user, username: "Ali", messageDescription: "I'm tired", time: "7:00"},
     ]
   return (
-    <div className="w-60 h-full bg-slate-800 p-2 rounded-r-lg pt-8 flex flex-col">
+    <div className="w-60 h-full bg-slate-800 p-2 border-r-2 border-slate-400 pt-8 flex flex-col">
       <Form.Item name={"search"}>
         <Input
           placeholder="Search"

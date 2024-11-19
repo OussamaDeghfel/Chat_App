@@ -1,10 +1,12 @@
+import ChatConversation from "./chatConversation"
+import ChatMessages from "./chatMessages"
 
-import SideBar from '../sideBar'
 
 const AllChat = () => {
   return (
-    <div>
-        <SideBar />
+    <div className="flex w-full h-full">
+        <ChatMessages />
+        <ChatConversation />
     </div>
   )
 }

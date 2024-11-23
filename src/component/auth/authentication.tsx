@@ -1,8 +1,28 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { Form, Input, Button, Checkbox } from "antd";
 import messagebackground from "../../assets/messagebackground.webp";
-const Auth = () => {
+import {createUserWithEmailAndPassword } from "firebase/auth"
+import { auth } from "../../firebase";
+
+
+const Authentication = () => {
   const [isSignIn, setIsSignIn] = useState(false)
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+
+  const handleSignUp = () => {
+    createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user
+      console.log("USER : ", user)
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage)
+    })
+  }
+
   return (
     <div className="w-full h-full bg-contain flex justify-center items-center " style={{ backgroundImage: `url(${messagebackground})` }}>
         <div className="w-full h-full justify-center items-center flex bg-black/70" >
@@ -25,7 +45,7 @@ const Auth = () => {
               { type: "email", message: "Enter a valid email!" },
             ]}
           >
-            <Input placeholder="Enter your email" />
+            <Input placeholder="Enter your email" onChange={(e) => setEmail(e.target.value)} />
           </Form.Item>
 
           <Form.Item
@@ -33,7 +53,7 @@ const Auth = () => {
             name="password"
             rules={[{ required: true, message: "Please enter your password!" }]}
           >
-            <Input.Password placeholder="Enter your password" />
+            <Input.Password placeholder="Enter your password" onChange={(e) => setPassword(e.target.value)} />
           </Form.Item>
 
           <Form.Item name="remember" valuePropName="checked">
@@ -45,7 +65,7 @@ const Auth = () => {
             </Button>
           </Form.Item>)}
           {isSignIn && (<Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button type="primary" htmlType="submit" block onClick={handleSignUp}>
               Sign Up
             </Button>
           </Form.Item>)}
@@ -60,4 +80,4 @@ const Auth = () => {
   );
 };
 
-export default Auth;
+export default Authentication;

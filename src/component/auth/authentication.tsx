@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Form, Input, Button, Checkbox } from "antd";
 import messagebackground from "../../assets/messagebackground.webp";
-import {createUserWithEmailAndPassword } from "firebase/auth"
+import {createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../../firebase";
 
 
@@ -13,6 +13,19 @@ const Authentication = () => {
   const handleSignUp = () => {
     if(!email || !password) return
     createUserWithEmailAndPassword(auth, email, password)
+    .then((userCredential) => {
+      const user = userCredential.user
+      console.log("USER : ", user)
+    })
+    .catch((error) => {
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      console.log(errorCode, errorMessage)
+    })
+  }
+  const handleSignIn = () => {
+    if(!email || !password) return
+    signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user
       console.log("USER : ", user)
@@ -61,7 +74,7 @@ const Authentication = () => {
             <Checkbox>Remember me</Checkbox>
           </Form.Item>
             {!isSignIn && (<Form.Item>
-            <Button type="primary" htmlType="submit" block>
+            <Button type="primary" htmlType="submit" block onClick={handleSignIn}>
               Sign IN
             </Button>
           </Form.Item>)}

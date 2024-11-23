@@ -11,6 +11,7 @@ const Authentication = () => {
   const [password, setPassword] = useState("")
 
   const handleSignUp = () => {
+    if(!email || !password) return
     createUserWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user

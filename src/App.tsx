@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import AllChat from "./component/AllChats/allChat";
 import Authentication from "./component/auth/authentication";
 // import SideBar from "./component/sideBar";
-import {ProtectedRoutes} from "./component/protectedRoutes";
+import { ProtectedRoutes } from "./component/protectedRoutes";
 
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth } from "./firebase";
@@ -22,31 +22,36 @@ function App() {
         return;
       }
       setUser(null);
-      setIsLoading(false)
+      setIsLoading(false);
     });
 
     return () => unSubscribe();
   });
 
-  if(isLoading) return <div>Loading...</div>
+  // if (isLoading) return <div>Loading...</div>;
 
   return (
     <>
       <div className="flex justify-center items-center w-full h-screen bg-slate-200">
         <div className="flex max-w-4xl w-full h-[80vh] bg-slate-500 shadow-inner">
-          <BrowserRouter>
-            <Routes>
-              <Route path="/" element={<Authentication />} />
-              <Route
-                path="/allChat"
-                element={
-                  <ProtectedRoutes user={user}>
-                    <AllChat />
-                  </ProtectedRoutes>
-                }
-              />
-            </Routes>
-          </BrowserRouter>
+          {isLoading ? (
+            <div className="justify-center items-center font-bold text-5xl text-white flex w-full h-full">Loading...</div>
+          ) : (
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Authentication user={user} />} />
+                <Route
+                  path="/allChat"
+                  element={
+                    <ProtectedRoutes user={user}>
+                      <AllChat />
+                    </ProtectedRoutes>
+                  }
+                />
+              </Routes>
+            </BrowserRouter>
+          )}
+
           {/* <SideBar />
            */}
         </div>

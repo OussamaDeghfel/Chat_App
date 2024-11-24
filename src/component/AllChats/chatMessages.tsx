@@ -16,12 +16,14 @@ const ChatMessages = () => {
     ]
   return (
     <div className="w-60 h-full bg-slate-800 p-2 border-r-2 border-slate-400 pt-8 flex flex-col">
+      <Form>
       <Form.Item name={"search"}>
         <Input
           placeholder="Search"
           prefix={<CiSearch size={15} color="slate" />}
         />
       </Form.Item>
+      </Form>
       <div className="w-full h-full flex flex-col justify-start items-center space-y-2">
 
         {messages.map((message) => {

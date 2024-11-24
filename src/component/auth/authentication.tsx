@@ -1,11 +1,17 @@
 import { useState } from "react";
+
 import { Form, Input, Button, Checkbox } from "antd";
+
 import messagebackground from "../../assets/messagebackground.webp";
+
 import {createUserWithEmailAndPassword,signInWithEmailAndPassword } from "firebase/auth"
 import { auth } from "../../firebase";
+import { User } from "firebase/auth";
+
+import { Navigate } from "react-router-dom";
 
 
-const Authentication = () => {
+const Authentication = ({ user }: {user: User | null}) => {
   const [isSignIn, setIsSignIn] = useState(false)
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
@@ -36,6 +42,8 @@ const Authentication = () => {
       console.log(errorCode, errorMessage)
     })
   }
+
+  if(user) return <Navigate to="/allChat"></Navigate>
 
   return (
     <div className="w-full h-full bg-contain flex justify-center items-center " style={{ backgroundImage: `url(${messagebackground})` }}>

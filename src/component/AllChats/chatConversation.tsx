@@ -1,12 +1,30 @@
 
 import { BsSendFill, BsThreeDotsVertical } from "react-icons/bs";
 import { CiSearch } from "react-icons/ci";
-import { HiMiniLink } from "react-icons/hi2";
+// import { HiMiniLink } from "react-icons/hi2";
 import { IoIosCall } from "react-icons/io";
-import { MdInsertPhoto } from "react-icons/md";
+// import { MdInsertPhoto } from "react-icons/md";
 import Conversation from "./conversation";
+import { db } from "../../firebase";
+import { addDoc, collection } from "firebase/firestore";
+import { useState } from "react";
 
 const ChatConversation = () => {
+
+  const [textByUser, setTextByUser] = useState<string>("")
+
+  const handleSendMessage = async () => {
+    await addDoc(collection(db, "messages"), {
+      text: textByUser,
+      sender: "user",
+      timestamp: new Date(),
+    })
+    console.log("text msg: ", textByUser)
+
+    setTextByUser('')
+  }
+
+
   return (
     <div className="w-full max-h-screen flex flex-col">
   {/* Navbar (Top Section) */}
@@ -33,18 +51,19 @@ const ChatConversation = () => {
 
   {/* Message Input (Bottom Section) */}
   <div className="flex w-full h-fit p-4 bg-slate-800 justify-center items-center space-x-5 py-2">
-    <div className="flex w-fit h-fit space-x-2">
+    {/* <div className="flex w-fit h-fit space-x-2">
       <HiMiniLink size={25} color="white" className="cursor-pointer" />
       <MdInsertPhoto size={25} color="white" className="cursor-pointer" />
-    </div>
+    </div> */}
 
     <div className="w-full flex justify-center items-center space-x-2">
       <input
         type="text"
         placeholder="Your message ..."
-        className="w-full h-10 bg-slate-800 border-2 border-slate-500 rounded-md px-2 outline-none text-white"
+        className="w-full h-10 bg-slate-800 border-2 border-slate-500 rounded-md px-2 outline-none text-white" 
+        onChange={(e) => setTextByUser(e.target.value)}
       />
-      <BsSendFill size={25} color="white" className="cursor-pointer" />
+      <BsSendFill size={25} color="white" className="cursor-pointer" onClick={handleSendMessage} />
     </div>
   </div>
 </div>

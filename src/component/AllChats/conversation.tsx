@@ -1,17 +1,24 @@
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
-import {db} from '../../firebase'
-import { useState } from "react";
+import { db } from "../../firebase";
+import { useEffect, useState } from "react";
 
 const Conversation = () => {
+  const [text, setText] = useState<string[]>();
+  
 
-  const [text, setText] = useState<string[]>()
+  useEffect(() => {
+    const messagesRef = collection(db, "messages");
+    const q = query(messagesRef, orderBy("timestamp", "asc"));
+    console.log(q)
+    onSnapshot(q, (snapshot) => {
+      const messages = snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data()
+      }));
 
-  const messagesRef = collection(db, 'messages')
-  const q = query(messagesRef, orderBy('text', 'asc'))
-  onSnapshot(q, (snapshot) => {
-    const messages = snapshot.docs.map((doc) => doc.data().text)
-    setText(messages)
-  })
+      
+    });
+  }, []);
 
   return (
     <div className="p-2 justify-end items-end bottom-0 space-y-4 flex-reverse">

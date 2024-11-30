@@ -27,6 +27,10 @@ const ChatConversation = () => {
 
   return (
     <div className="w-full max-h-screen flex flex-col">
+      <div className="flex w-full h-full border-b-2 border-slate-400 justify-center items-center">
+        <h1 className="font-bold text-3xl text-white">Select a Chat</h1>
+      </div>
+      <div className="hidden">
   {/* Navbar (Top Section) */}
   <div className="flex w-full h-20 bg-slate-800 border-b-2 border-slate-400 justify-center items-center px-2">
     <div className="flex flex-col w-full h-fit">
@@ -65,6 +69,7 @@ const ChatConversation = () => {
       />
       <BsSendFill size={25} color="white" className="cursor-pointer" onClick={handleSendMessage} />
     </div>
+  </div>
   </div>
 </div>
 

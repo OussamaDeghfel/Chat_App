@@ -1,63 +1,100 @@
 import { Form, Input } from "antd";
 import { CiSearch } from "react-icons/ci";
-import user from "../../assets/user.webp";
+// import user from "../../assets/user.webp";
 import { TiPin } from "react-icons/ti";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const ChatMessages = () => {
+  const usersList = useSelector((state: RootState) => state.user.usersList);
 
-    const messages = [
-        {id: 1, image: user, username: "Ammar", messageDescription: "Hello", time: "10:00"},
-        {id: 2, image: user, username: "Ahmed", messageDescription: "How are you", time: "12:00"},
-        {id: 3, image: user, username: "Mohammed", messageDescription: "I'm fine thank you", time: "1:00"},
-        {id: 4, image: user, username: "Ali", messageDescription: "What about you", time: "2:00"},
-        {id: 5, image: user, username: "Omar", messageDescription: "I'm good", time: "3:00"},
-        {id: 6, image: user, username: "Ammar", messageDescription: "I'm happy", time: "4:00"},
-    ]
+  console.log("userList: ", usersList);
+
+  // const messages = [
+  //   {
+  //     id: usersList[0].id,
+  //     image: user,
+  //     username: usersList[0].sender,
+  //     messageDescription: usersList[0].text,
+  //     time: usersList[0].timestamp,
+  //   },
+  // ];
+
+  const currentDate = new Date();
+
+  const calculedTime = (time: Date) => {
+    const timeDiff = currentDate.getTime() - time.getTime();
+    const minutes = Math.floor(timeDiff / 60000);
+    if (minutes < 1) {
+      return "now";
+    }
+    if (minutes < 60) {
+      return minutes + "m ago";
+    }
+    if (minutes >= 60 && minutes < 1440) {
+      const hours = Math.floor(minutes / 60);
+      return hours + "h ago";
+    }
+    if (minutes >= 1440) {
+      const days = Math.floor(minutes / 1440);
+      return days + "d ago";
+    }
+  };
   return (
     <div className="w-60 h-full bg-slate-800 p-2 border-r-2 border-slate-400 pt-8 flex flex-col">
       <Form>
-      <Form.Item name={"search"}>
-        <Input
-          placeholder="Search"
-          prefix={<CiSearch size={15} color="slate" />}
-        />
-      </Form.Item>
+        <Form.Item name={"search"}>
+          <Input
+            placeholder="Search"
+            prefix={<CiSearch size={15} color="slate" />}
+          />
+        </Form.Item>
       </Form>
       <div className="w-full h-full flex flex-col justify-start items-center space-y-2">
-
-        {messages.map((message) => {
+        {usersList.length == 0 && <div className="text-white">No User Found</div>}
+        {usersList.map((user) => {
           return (
-            <div className={`w-full h-16 flex rounded-lg p-2 bg-slate-600 justify-center items-center space-x-1 cursor-pointer ${message.id == 1 ? "bg-blue-600 border-2 border-slate-950" : ""}`} key={message.id}>
-          <div className="w-10 h-10 flex justify-center items-center">
-            <img
-              src={message.image}
-              alt="user image"
-              className=" rounded-md"
-            />
-          </div>
-          <div className="w-full h-full flex flex-col space-y-1 justify-center items-start">
-            <h1 className="font-medium text-white">{message.username}</h1>
-            <p className="text-xs text-gray-300 overflow-hidden">{`${(message.messageDescription).split("").slice(0, 20).join("")}`}...</p>
-          </div>
-          <div className="w-10 h-10 flex flex-col gap-1 place-content-center">
-            <div className="w-full h-full flex justify-center items-center">
-              <IoCheckmarkDoneSharp size={15} className="hidden" />
-              <span className="text-xs text-gray-300">{message.time}</span>
+            <div
+              className={`w-full h-16 flex rounded-lg p-2 bg-slate-600 justify-center items-center space-x-1 cursor-pointer `}
+              key={user.id}
+            >
+              {/* <div className="w-10 h-10 flex justify-center items-center">
+                <img
+                  src={user.image}
+                  alt="user image"
+                  className=" rounded-md"
+                />
+              </div> */}
+              <div className="w-full h-full flex flex-col space-y-1 justify-center items-start">
+                <h1 className="font-medium text-xl text-white">{user.sender}</h1>
+                <p className="text-xs text-gray-300 overflow-hidden">
+                  {`${user.text
+                    .split("")
+                    .slice(0, 20)
+                    .join("")}`}
+                  ...
+                </p>
+              </div>
+              <div className="w-10 h-10 flex flex-col gap-1 place-content-center">
+                <div className="w-full h-full flex justify-center items-center">
+                  <IoCheckmarkDoneSharp size={15} className="hidden" />
+                  <span className="text-xs text-gray-300">
+                    {calculedTime(user.timestamp)}
+                  </span>
+                </div>
+                <div className="w-full h-full flex justify-center items-center">
+                  <span className="bg-blue-500 rounded-full text-sm text-center w-full h-full hidden">
+                    4
+                  </span>
+                  <button>
+                    <TiPin size={15} className="text-gray-300" />
+                  </button>
+                </div>
+              </div>
             </div>
-            <div className="w-full h-full flex justify-center items-center">
-              <span className="bg-blue-500 rounded-full text-sm text-center w-full h-full hidden">
-                4
-              </span>
-              <button >
-                <TiPin size={15} className="text-gray-300"/>
-              </button>
-            </div>
-          </div>
-        </div>
-          )
+          );
         })}
-        
       </div>
     </div>
   );

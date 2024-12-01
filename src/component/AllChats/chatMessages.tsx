@@ -3,23 +3,20 @@ import { CiSearch } from "react-icons/ci";
 // import user from "../../assets/user.webp";
 import { TiPin } from "react-icons/ti";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
+import { useEffect } from "react";
+import { getUsers } from "../../redux/usersSlice";
 
 const ChatMessages = () => {
   const usersList = useSelector((state: RootState) => state.user.usersList);
+  const dispatch = useDispatch()
 
   console.log("userList: ", usersList);
 
-  // const messages = [
-  //   {
-  //     id: usersList[0].id,
-  //     image: user,
-  //     username: usersList[0].sender,
-  //     messageDescription: usersList[0].text,
-  //     time: usersList[0].timestamp,
-  //   },
-  // ];
+  useEffect(() => {
+    getUsers()(dispatch)
+  },[dispatch])
 
   const currentDate = new Date();
 
@@ -68,20 +65,20 @@ const ChatMessages = () => {
               </div> */}
               <div className="w-full h-full flex flex-col space-y-1 justify-center items-start">
                 <h1 className="font-medium text-xl text-white">{user.sender}</h1>
-                <p className="text-xs text-gray-300 overflow-hidden">
+                {/* <p className="text-xs text-gray-300 overflow-hidden">
                   {`${user.text
                     .split("")
                     .slice(0, 20)
                     .join("")}`}
                   ...
-                </p>
+                </p> */}
               </div>
               <div className="w-10 h-10 flex flex-col gap-1 place-content-center">
                 <div className="w-full h-full flex justify-center items-center">
                   <IoCheckmarkDoneSharp size={15} className="hidden" />
-                  <span className="text-xs text-gray-300">
+                  {/* <span className="text-xs text-gray-300">
                     {calculedTime(user.timestamp)}
-                  </span>
+                  </span> */}
                 </div>
                 <div className="w-full h-full flex justify-center items-center">
                   <span className="bg-blue-500 rounded-full text-sm text-center w-full h-full hidden">

@@ -12,7 +12,7 @@ const ChatMessages = () => {
   const usersList = useSelector((state: RootState) => state.user.usersList);
   const dispatch = useDispatch()
 
-  console.log("userList: ", usersList);
+  console.log("userList from chatMessages: ", usersList.map((user) => user.userName));
 
   useEffect(() => {
     getUsers()(dispatch)
@@ -64,7 +64,7 @@ const ChatMessages = () => {
                 />
               </div> */}
               <div className="w-full h-full flex flex-col space-y-1 justify-center items-start">
-                <h1 className="font-medium text-xl text-white">{user.sender}</h1>
+                <h1 className="font-medium text-xl text-white">{user.userName}</h1>
                 {/* <p className="text-xs text-gray-300 overflow-hidden">
                   {`${user.text
                     .split("")

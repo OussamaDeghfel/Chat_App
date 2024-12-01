@@ -1,8 +1,8 @@
-import {  createSlice  } from "@reduxjs/toolkit";
-
+import { createSlice } from "@reduxjs/toolkit";
 
 export interface UserStateType {
-    id:string ;
+  id: string;
+  userName: string;
   sender: string;
   text: string;
   timestamp: Date;
@@ -47,11 +47,11 @@ export const usersSlice = createSlice({
   initialState,
   reducers: {
     setUsers: (state, action) => {
-      state.usersList = action.payload
+      state.usersList = action.payload;
     },
     setIsLoading: (state, action) => {
-      state.isLoading = action.payload
-    }
+      state.isLoading = action.payload;
+    },
   },
   // extraReducers: (builder) => {
   //   builder
@@ -73,6 +73,6 @@ export const usersSlice = createSlice({
   // },
 });
 
-export const { setUsers,setIsLoading } = usersSlice.actions
+export const { setUsers, setIsLoading } = usersSlice.actions;
 
 export default usersSlice.reducer;

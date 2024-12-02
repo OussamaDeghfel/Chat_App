@@ -8,8 +8,12 @@ import Conversation from "./conversation";
 import { db } from "../../firebase";
 import { addDoc, collection } from "firebase/firestore";
 import { useState } from "react";
+import { useSelector } from "react-redux";
+import { RootState } from "../../redux/store";
 
 const ChatConversation = () => {
+
+  const conversation = useSelector((state: RootState) => state.user.conversation)
 
   const [textByUser, setTextByUser] = useState<string>("")
 
@@ -27,10 +31,9 @@ const ChatConversation = () => {
 
   return (
     <div className="w-full max-h-screen flex flex-col">
-      <div className="flex w-full h-full border-b-2 border-slate-400 justify-center items-center">
+      {conversation.length == 0 ? (<div className="flex w-full h-full border-b-2 border-slate-400 justify-center items-center">
         <h1 className="font-bold text-3xl text-white">Select a Chat</h1>
-      </div>
-      <div className="hidden">
+      </div>) : (<div>
   {/* Navbar (Top Section) */}
   <div className="flex w-full h-20 bg-slate-800 border-b-2 border-slate-400 justify-center items-center px-2">
     <div className="flex flex-col w-full h-fit">
@@ -50,7 +53,7 @@ const ChatConversation = () => {
 
   {/* Conversation Area (Middle Section) */}
   <div className="flex-1 overflow-y-scroll ">
-    <Conversation />
+    <Conversation conv={conversation} />
   </div>
 
   {/* Message Input (Bottom Section) */}
@@ -70,7 +73,9 @@ const ChatConversation = () => {
       <BsSendFill size={25} color="white" className="cursor-pointer" onClick={handleSendMessage} />
     </div>
   </div>
-  </div>
+      </div>)}
+      
+      
 </div>
 
   );

@@ -1,22 +1,28 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export interface message{
+  text: string
+  sender: string
+  timestamp: {
+    seconds: number;
+    nanoseconds: number;
+  };
+}
 export interface MessageStateType {
   userId:string;
-  message: {
-    text: string
-    sender: string
-    timestamp: Date
-  }
+  message: message[]
 }
 
 export interface usersList {
   usersList: MessageStateType[];
+  conversation: MessageStateType[]
   isLoading: boolean;
   error: string | null;
 }
 
 const initialState: usersList = {
   usersList: [],
+  conversation: [],
   isLoading: false,
   error: null,
 };
@@ -53,6 +59,9 @@ export const usersSlice = createSlice({
     setIsLoading: (state, action) => {
       state.isLoading = action.payload;
     },
+    setConversation: (state, action) => {
+      state.conversation = action.payload
+    }
   },
   // extraReducers: (builder) => {
   //   builder
@@ -74,6 +83,6 @@ export const usersSlice = createSlice({
   // },
 });
 
-export const { setUsers, setIsLoading } = usersSlice.actions;
+export const { setUsers, setIsLoading, setConversation } = usersSlice.actions;
 
 export default usersSlice.reducer;

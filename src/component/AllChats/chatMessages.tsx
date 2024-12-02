@@ -6,7 +6,7 @@ import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
 import { useEffect } from "react";
-import { getUsers } from "../../redux/usersSlice";
+import { getSelectedConversation, getUsers } from "../../redux/usersSlice";
 
 const ChatMessages = () => {
   const usersList = useSelector((state: RootState) => state.user.usersList);
@@ -57,6 +57,7 @@ const ChatMessages = () => {
             <div
               className={`w-full h-16 flex rounded-lg p-2 bg-slate-600 justify-center items-center space-x-1 cursor-pointer `}
               key={user.userId}
+              onClick={() => dispatch(getSelectedConversation(user.userId))}
             >
               <div className="w-10 h-10 flex justify-center items-center">
                 {/* <img

@@ -1,15 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export interface UserStateType {
-  id: string;
-  userName: string;
-  sender: string;
-  text: string;
-  timestamp: Date;
+export interface MessageStateType {
+  userId:string;
+  message: {
+    text: string
+    sender: string
+    timestamp: Date
+  }
 }
 
 export interface usersList {
-  usersList: UserStateType[];
+  usersList: MessageStateType[];
   isLoading: boolean;
   error: string | null;
 }

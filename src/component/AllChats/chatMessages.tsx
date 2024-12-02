@@ -16,30 +16,28 @@ const ChatMessages = () => {
     getUsers()(dispatch)
   },[dispatch])
 
-  // usersList.map((user) => {
-  //   console.log(user.userId, user.message.text, user.message.sender);
-  // });
+  const currentDate = new Date();
 
-  // const currentDate = new Date();
+  const calculedTime = (seconds: number, nanoseconds: number) => {
+    const convertedDate = new Date(seconds * 1000 + nanoseconds / 1e6);
 
-  // const calculedTime = (time: Date) => {
-  //   const timeDiff = currentDate.getTime() - time.getTime();
-  //   const minutes = Math.floor(timeDiff / 60000);
-  //   if (minutes < 1) {
-  //     return "now";
-  //   }
-  //   if (minutes < 60) {
-  //     return minutes + "m ago";
-  //   }
-  //   if (minutes >= 60 && minutes < 1440) {
-  //     const hours = Math.floor(minutes / 60);
-  //     return hours + "h ago";
-  //   }
-  //   if (minutes >= 1440) {
-  //     const days = Math.floor(minutes / 1440);
-  //     return days + "d ago";
-  //   }
-  // };
+    const timeDiff = currentDate.getTime() - convertedDate.getTime();
+    const minutes = Math.floor(timeDiff / 60000);
+    if (minutes < 1) {
+      return "now";
+    }
+    if (minutes < 60) {
+      return minutes + "m ago";
+    }
+    if (minutes >= 60 && minutes < 1440) {
+      const hours = Math.floor(minutes / 60);
+      return hours + "h ago";
+    }
+    if (minutes >= 1440) {
+      const days = Math.floor(minutes / 1440);
+      return days + "d ago";
+    }
+  };
 
   
   return (
@@ -81,7 +79,7 @@ const ChatMessages = () => {
                 <div className="w-full h-full flex justify-center items-center">
                   <IoCheckmarkDoneSharp size={15} className="hidden" />
                   <span className="text-xs text-gray-300">
-                    {/* {user.message.timestamp.toDateStri} */}
+                    {calculedTime(user.message.timestamp.seconds, user.message.timestamp.nanoseconds )}
                   </span>
                 </div>
                 <div className="w-full h-full flex justify-center items-center">

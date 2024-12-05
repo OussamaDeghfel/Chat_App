@@ -5,7 +5,7 @@ import { TiPin } from "react-icons/ti";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { getSelectedConversation, getUsers } from "../../redux/usersSlice";
 
 const ChatMessages = () => {
@@ -14,6 +14,10 @@ const ChatMessages = () => {
 
   useEffect(() => {
     getUsers()(dispatch)
+  },[dispatch])
+
+  const handleSelectedConv = useCallback((userId: string) => {
+    dispatch(getSelectedConversation(userId))
   },[dispatch])
 
   const currentDate = new Date();
@@ -57,7 +61,7 @@ const ChatMessages = () => {
             <div
               className={`w-full h-16 flex rounded-lg p-2 bg-slate-600 justify-center items-center space-x-1 cursor-pointer `}
               key={user.userId}
-              onClick={() => dispatch(getSelectedConversation(user.userId))}
+              onClick={() => handleSelectedConv(user.userId)}
             >
               <div className="w-10 h-10 flex justify-center items-center">
                 {/* <img

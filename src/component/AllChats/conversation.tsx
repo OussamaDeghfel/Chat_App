@@ -3,11 +3,6 @@ const Conversation = ({conv}: any ) => {
 
   return (
     <div className="p-2 justify-end items-end bottom-0 space-y-4 flex-reverse">
-      <div className="flex flex-col justify-end items-end">
-        
-        <p className="bg-blue-500 p-4 w-fit rounded-md">hi</p>
-       
-      </div>
       <div className="flex flex-col justify-end items-start bg-gray">
 
         {conv.map((msg) => {

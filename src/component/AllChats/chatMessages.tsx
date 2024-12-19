@@ -4,13 +4,13 @@ import { CiSearch } from "react-icons/ci";
 import { TiPin } from "react-icons/ti";
 import { IoCheckmarkDoneSharp } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../../redux/store";
+import { RootState, appDispatch } from "../../redux/store";
 import { useCallback, useEffect } from "react";
 import { getSelectedConversation, getUsers } from "../../redux/usersSlice";
 
 const ChatMessages = () => {
   const usersList = useSelector((state: RootState) => state.user.usersList);
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<appDispatch>()
 
   useEffect(() => {
     getUsers()(dispatch)

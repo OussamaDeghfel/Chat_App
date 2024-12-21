@@ -29,12 +29,14 @@ const Authentication = ({ user }: {user: User | null}) => {
       console.log(errorCode, errorMessage)
     })
   }
+
   const handleSignIn = () => {
     if(!email || !password) return
     signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
       const user = userCredential.user
-      console.log("USER : ", user)
+      localStorage.setItem("user", JSON.stringify(user.email))
+      console.log("USER from local : ", localStorage.getItem("user"))
     })
     .catch((error) => {
       const errorCode = error.code;

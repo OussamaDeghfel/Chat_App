@@ -3,18 +3,32 @@ import { collection, DocumentData, getDocs, limit, orderBy, query } from "fireba
 import { db } from "../../firebase";
 import { appDispatch } from "../store";
 import { setConversation, setIsLoading, setUsers } from "./reducers";
-import { message } from "antd";
+// import { message } from "antd";
 
 
 export const getUsers = () => async(dispatch: appDispatch) => {
     dispatch(setIsLoading(true))
     try {
+        const authenticatedEmail = localStorage.getItem("user");
+
+        if (!authenticatedEmail) {
+            throw new Error("Authenticated email not found");
+        }
+
         const usersRef = collection(db, "messages");
         const messagesSnapshot = await getDocs(usersRef)
+
+    
         const lastMessages: { userId: string; message: DocumentData; }[] = []
 
         for(const messagesDoc of messagesSnapshot.docs){
             const userId = messagesDoc.id
+            const emailMsg = messagesDoc.data()?.emailMsg;
+
+            if (emailMsg === authenticatedEmail) {
+                continue;
+            }
+
             const conversationCollection = collection(db, "messages", userId, "conversation")
 
             const lastMessageQuery = query(conversationCollection, orderBy("timestamp", "desc"), limit(1))
@@ -24,14 +38,14 @@ export const getUsers = () => async(dispatch: appDispatch) => {
             conversationSnapshot.forEach((doc) => {
                 lastMessages.push({
                     userId,
-                    message: doc.data()
-                })
-            })
+                    message: doc.data(),
+                });
+            });
         }
     
         dispatch(setUsers(lastMessages))
     } catch (error:any) {
-        message.error(error)
+        console.log("error in selected messages List", error)
         dispatch(setIsLoading(false))
     }
    
@@ -58,7 +72,7 @@ export const getSelectedConversation = (userId: string) => async (dispatch: appD
 
 
     } catch (error:any) {
-        message.error(error)
+        console.log("error in selected messages conversation ",error)
         dispatch(setIsLoading(false))
     }
 }

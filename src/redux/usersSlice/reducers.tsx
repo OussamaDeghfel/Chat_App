@@ -7,6 +7,7 @@ export interface message{
     seconds: number;
     nanoseconds: number;
   };
+  email?: string
 }
 export interface MessageStateType {
   userId:string;

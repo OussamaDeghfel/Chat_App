@@ -6,46 +6,38 @@ import { setConversation, setIsLoading, setUsers } from "./reducers";
 // import { message } from "antd";
 
 
+interface LastMessage {
+    userId: string
+    message: DocumentData
+}
+
 export const getUsers = () => async(dispatch: appDispatch) => {
     dispatch(setIsLoading(true))
     try {
-        const authenticatedEmail = localStorage.getItem("user");
-
-        if (!authenticatedEmail) {
-            throw new Error("Authenticated email not found");
-        }
-
-        const usersRef = collection(db, "messages");
+        const usersRef = collection(db, "messages")
         const messagesSnapshot = await getDocs(usersRef)
+        
+        const lastMessages = await Promise.all(
+            messagesSnapshot.docs.map(async (messageDoc) => {
+                const userId = messageDoc.id
+                const conversationRef = collection(db, "messages", userId, "conversation")
+                const lastMessageQuery = query(
+                    conversationRef,
+                    orderBy("timestamp", "desc"),
+                    limit(1)
+                )
+                
+                const snapshot = await getDocs(lastMessageQuery)
+                const lastMessage = snapshot.docs[0]?.data()
+                
+                return lastMessage ? { userId, message: lastMessage } : null
+            })
+        )
 
-    
-        const lastMessages: { userId: string; message: DocumentData; }[] = []
-
-        for(const messagesDoc of messagesSnapshot.docs){
-            const userId = messagesDoc.id
-            const emailMsg = messagesDoc.data()?.emailMsg;
-
-            if (emailMsg === authenticatedEmail) {
-                continue;
-            }
-
-            const conversationCollection = collection(db, "messages", userId, "conversation")
-
-            const lastMessageQuery = query(conversationCollection, orderBy("timestamp", "desc"), limit(1))
-
-            const conversationSnapshot = await getDocs(lastMessageQuery)
-
-            conversationSnapshot.forEach((doc) => {
-                lastMessages.push({
-                    userId,
-                    message: doc.data(),
-                });
-            });
-        }
-    
-        dispatch(setUsers(lastMessages))
-    } catch (error:any) {
-        console.log("error in selected messages List", error)
+        dispatch(setUsers(lastMessages.filter((msg): msg is LastMessage => msg !== null)))
+    } catch (error) {
+        console.error("Failed to fetch users:", error)
+    } finally {
         dispatch(setIsLoading(false))
     }
    
